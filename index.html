@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Scrub</title>
+		<meta charset="utf-8">
+		<style>
+			body {
+				font-family: sans-serif;
+				padding: 0;
+				margin: 0;
+			}
+			#scrub-container {
+				
+			}
+			ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul li {
+				position: absolute;
+				background: red;
+				display: block;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				font-size: 45em;
+				vertical-align: middle;
+			}
+			
+			/*
+			// crazy
+			ul li:nth-child(even) {
+				background: blue;
+				color: white;
+			}
+			*/
+			
+		</style>
+		<script>
+			// on window loaded
+			window.onload = function () {
+				
+				// window height
+				var wh = window.innerHeight + 'px';
+				// window width
+				var ww = window.innerWidth;
+				
+				// get items
+				var items = document.querySelectorAll('#scrub-container ul li');
+				
+				// on resize update vars
+				window.onresize = function () {
+					wh = window.innerHeight + 'px';
+					ww = window.innerWidth;
+					setItems();
+				}				
+				
+				// when we move the mouse, scroll through panels?
+				window.onmousemove = function (e) {
+					var currentX 	= e.clientX;					
+					var itemCount	= items.length;
+					var area		= Math.ceil(ww / itemCount);
+					for (var i in items) {						
+						if (currentX >= (area * i)) {
+							items[i].style.display = 'block';
+						} else {
+							items[i].style.display = 'none';
+						}
+					}
+				}
+				
+				// add some mouse wheel scrolling! some conditions due to firefox being different - bit dodgy with both mousemove enabled
+				/**
+				var mousewheelevt 	= (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"
+				var nextIndex		= 0;
+				window["on"+mousewheelevt] = function (e) {
+					var delta = e.detail ? e.detail*(-120) : e.wheelDelta;
+					// set nextIndex
+					nextIndex = (delta >= -120) ? (nextIndex+1) : (nextIndex-1);
+					nextIndex = (nextIndex < 0) ? items.length : (nextIndex > (items.length-1)) ? 0 : nextIndex;
+					// loop through items etc
+					for (var i in items) {
+						if (i == nextIndex) {
+							items[i].style.display = 'block';
+						} else {
+							items[i].style.display = 'none';
+						}
+					}
+					// disable mouse move too?
+					window.onmousemove = function () { return false; }
+					return false;
+				}
+				/**/
+				
+				// set some basic styling and parameters for items in list
+				function setItems () {					
+					// set items height
+					for (var i in items) {				
+						//if (items[i] != undefined) continue;
+						items[i].style.height = wh;
+						if (i > 0) {
+							items[i].style.display = 'none';
+						}
+					}					
+				}				
+				setItems();								
+				
+			}
+		</script>
+	</head>
+	<body>
+		<div id="scrub-container">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+				<li>10</li>
+			</ul>
+		</div>
+	</body>
+</html>
